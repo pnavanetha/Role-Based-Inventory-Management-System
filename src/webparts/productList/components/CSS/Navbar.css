@@ -1,0 +1,58 @@
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background: #f3f2f1;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.hamburger {
+  text-align: center;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 20px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+  gap: 12px;
+}
+
+.menu-item:hover {
+  background-color: #edebe9;
+}
+
+.icon {
+  width: 24px;
+  text-align: center;
+}
+
+.menu-text {
+  flex: 1;
+  font-size: 16px;
+}
+
+.arrow {
+  margin-left: auto;
+}
+
+.submenu {
+  padding-left: 52px;
+}
+
+.submenu-item {
+  padding: 12px 10px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.submenu-item:hover {
+  background-color: #edebe9;
+}
