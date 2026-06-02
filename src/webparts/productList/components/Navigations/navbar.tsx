@@ -10,23 +10,17 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   return (
+    <React.Fragment>
     <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-
-      {/* Hamburger Menu */}
+  
       <div
         className="hamburger"
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
         ☰
       </div>
-      <div className="role-badge">
-
-        Logged User Role:
-        
-
-      </div>
-
-      {/* Dashboard */}
+  
+   
       <div className="menu-item">
         <span className="icon">🏠</span>
 
@@ -95,6 +89,7 @@ const Navbar: React.FC = () => {
       )}
 
     </div>
+  </React.Fragment>
   );
 };
 

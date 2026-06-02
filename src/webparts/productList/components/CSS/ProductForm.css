@@ -1,48 +1,282 @@
+/* Main Container */
+
 .product-form-container {
-  max-width: 700px;
-  margin: 20px auto;
-  padding: 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #d9d9d9;
+
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+
+    padding: 15px;
+
+    margin: 15px;
+
 }
 
+/* Header */
+
+.form-header {
+
+    background: #06b6d4;
+
+    color: #ffffff;
+
+    padding: 12px 15px;
+
+    margin-bottom: 20px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+.header-title {
+
+    font-size: 24px;
+
+    font-weight: 600;
+
+}
+
+.header-required {
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+}
+
+.header-required span {
+
+    color: #ff4d4f;
+
+}
+
+/* Grid Layout */
+
+.product-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 15px;
+
+}
+
+/* Form Group */
+
 .form-group {
-  margin-bottom: 15px;
+
+    display: flex;
+
+    flex-direction: column;
+
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #333;
+
+    margin-bottom: 5px;
+
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
-}
+/* Required Symbol */
 
-.checkbox {
-  display: flex;
-  align-items: center;
-}
-
-button {
-  padding: 10px 20px;
-  cursor: pointer;
-}
 .required {
-  color: red;
-  font-weight: bold;
-  margin-left: 2px;
+
+    color: red;
+
+    margin-left: 3px;
+
 }
 
-.error-input {
-  border: 2px solid red !important;
+/* Inputs */
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group select {
+
+    width: 100%;
+
+    height: 38px;
+
+    border: 1px solid #c8c8c8;
+
+    border-radius: 3px;
+
+    padding: 0 10px;
+
+    box-sizing: border-box;
+
+    background: #fff;
+
 }
 
-.error-input:focus {
-  border: 2px solid red !important;
-  outline: none;
-  box-shadow: 0 0 5px red;
+/* Focus */
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    outline: none;
+
+    border-color: #06b6d4;
+
+    box-shadow: 0 0 3px rgba(23, 50, 77, 0.4);
+
+}
+
+/* Description */
+
+.description-section {
+
+    margin-top: 20px;
+
+}
+
+.description-section textarea {
+
+    width: 100%;
+
+    min-height: 100px;
+
+    border: 1px solid #c8c8c8;
+
+    border-radius: 3px;
+
+    padding: 10px;
+
+    resize: vertical;
+
+    box-sizing: border-box;
+
+}
+
+/* Checkbox Section */
+
+.active-group {
+
+    justify-content: center;
+
+    align-items: flex-start;
+
+}
+
+.active-group input[type="checkbox"] {
+
+    width: 18px;
+
+    height: 18px;
+
+    margin-top: 8px;
+
+}
+
+/* Buttons */
+
+.button-section {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 25px;
+
+}
+
+.btn-submit {
+
+    background: #06b6d4;
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 25px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+}
+
+.btn-submit:hover {
+
+    background: #06b6d4;
+
+}
+
+.btn-submit:disabled {
+
+    background: #999;
+
+    cursor: not-allowed;
+
+}
+
+.btn-cancel {
+
+    background: #7d7d7d;
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 25px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+}
+
+.btn-cancel:hover {
+
+    background: #666666;
+
+}
+
+/* Responsive */
+
+@media screen and (max-width: 1024px) {
+
+    .product-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+
+    .product-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .form-header {
+
+        flex-direction: column;
+
+        gap: 10px;
+
+        text-align: center;
+
+    }
+
 }

@@ -1,5 +1,6 @@
-import { SPFI } from '@pnp/sp';
+import {  SPFI } from '@pnp/sp';
 import '@pnp/sp/webs';
+
 import '@pnp/sp/lists';
 import '@pnp/sp/items';
 // import '@pnp/sp/files';
@@ -19,28 +20,13 @@ export default class ProductService {
   public async getProducts(): Promise<IProduct[]> {
 
     try {
-
       return await this._sp.web.lists
         .getByTitle('ProductList')
         .items
-        .select(
-          'Id',
-          'Title',
-          'ProductCode',
-          'Description',
-          'Quantity',
-          'UnitPrice',
-          'Category',
-          'PurchaseDate',
-          'StockStatus',
-          'IsActive'
-        )
+        .select('Id','Title','ProductCode','Description','Quantity','UnitPrice','Category','PurchaseDate','StockStatus','IsActive')
         .orderBy('Id', false)();
-
     } catch (error) {
-
       console.error('Get Products Error', error);
-
       throw error;
     }
   }
@@ -76,23 +62,14 @@ export default class ProductService {
         .items.add({
 
           Title: product.Title,
-
           ProductCode: product.ProductCode,
-
           Description: product.Description,
-
           Quantity: product.Quantity,
-
           UnitPrice: product.UnitPrice,
-
           Category: product.Category,
-
           PurchaseDate: product.PurchaseDate,
-
           StockStatus: product.StockStatus,
-
           IsActive: product.IsActive
-
         });
 
       return result?.data?.Id ?? 0;
@@ -119,23 +96,14 @@ export default class ProductService {
         .update({
 
           Title: product.Title,
-
           ProductCode: product.ProductCode,
-
           Description: product.Description,
-
           Quantity: product.Quantity,
-
           UnitPrice: product.UnitPrice,
-
           Category: product.Category,
-
           PurchaseDate: product.PurchaseDate,
-
           StockStatus: product.StockStatus,
-
           IsActive: product.IsActive
-
         });
 
     } catch (error) {

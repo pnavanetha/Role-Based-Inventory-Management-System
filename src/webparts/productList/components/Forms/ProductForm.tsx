@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -20,162 +20,172 @@ const ProductForm: React.FC<IProductFormProps> = ({
 }) => {
 
     const navigate = useNavigate();
-
     const { id } = useParams();
 
     const isEditMode = !!id;
 
-    // States
+    const [formData, setFormData] = useState({
+        Title: '',
+        ProductCode: '',
+        Description: '',
+        Quantity: '',
+        UnitPrice: '',
+        Category: '',
+        PurchaseDate: '',
+        StockStatus: '',
+        IsActive: true
+    });
 
-    const [title, setTitle] = useState('');
-    const [productCode, setProductCode] = useState('');
-    const [description, setDescription] = useState('');
-    const [quantity, setQuantity] = useState('');
-    const [unitPrice, setUnitPrice] = useState('');
-    const [category, setCategory] = useState('');
-    const [purchaseDate, setPurchaseDate] = useState('');
-    const [stockStatus, setStockStatus] = useState('');
-    const [isActive, setIsActive] = useState(true);
+    useEffect(() => {
 
-    // Refs
+        const loadProduct = async (): Promise<void> => {
+
+            if (!id) return;
+
+            try {
+
+                const product =
+                    await productService.getProductById(
+                        Number(id)
+                    );
+
+                setFormData({
+                    Title: product.Title || '',
+                    ProductCode: product.ProductCode || '',
+                    Description: product.Description || '',
+                    Quantity: product.Quantity?.toString() || '',
+                    UnitPrice: product.UnitPrice?.toString() || '',
+                    Category: product.Category || '',
+                    PurchaseDate: product.PurchaseDate || '',
+                    StockStatus: product.StockStatus || '',
+                    IsActive: product.IsActive ?? true
+                });
+
+            } catch (error) {
+
+                console.error(error);
+                toast.error('Failed to load product');
+
+            }
+        };
+
+        loadProduct();
+
+    }, [id]);
 
     const titleRef = useRef<HTMLInputElement>(null);
     const productCodeRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const quantityRef = useRef<HTMLInputElement>(null);
     const unitPriceRef = useRef<HTMLInputElement>(null);
-    const categoryRef = useRef<HTMLInputElement>(null);
+    const categoryRef = useRef<HTMLSelectElement>(null);
     const purchaseDateRef = useRef<HTMLInputElement>(null);
-    const stockStatusRef = useRef<HTMLInputElement>(null);
+    const stockStatusRef = useRef<HTMLSelectElement>(null);
 
-    // Load Data For Edit
+    const handleChange = (
+        e: React.ChangeEvent<
+            HTMLInputElement |
+            HTMLTextAreaElement |
+            HTMLSelectElement
+        >
+    ): void => {
 
-    const loadProduct = async (): Promise<void> => {
+        const { name, value, type } = e.target;
 
-        if (!id) return;
-
-        try {
-
-            const product =
-                await productService.getProductById(
-                    Number(id)
-                );
-
-            setTitle(product.Title || '');
-
-            setProductCode(
-                product.ProductCode || ''
-            );
-
-            setDescription(product.Description || '');
-            setQuantity(product.Quantity?.toString() || '');
-            setUnitPrice(product.UnitPrice?.toString() || '');
-            setCategory(product.Category || '');
-            setPurchaseDate(product.PurchaseDate || '');
-            setStockStatus(product.StockStatus || '');
-            setIsActive(product.IsActive !== undefined ? product.IsActive : true);
-
-        }
-        catch (error) {
-
-            console.error(error);
-
-        }
-
+        setFormData(prev => ({
+            ...prev,
+            [name]:
+                type === 'checkbox'
+                    ? (e.target as HTMLInputElement).checked
+                    : value
+        }));
     };
 
-    useEffect(() => {
+    const validateForm = (): boolean => {
 
-        if (id) {
-
-            loadProduct();
-
+        if (!formData.Title.trim()) {
+            toast.error('Product Title is required');
+            titleRef.current?.focus();
+            return false;
         }
 
-    }, [id]);
+        if (!formData.ProductCode.trim()) {
+            toast.error('Product Code is required');
+            productCodeRef.current?.focus();
+            return false;
+        }
+        
+        if (
+            !formData.Quantity ||
+            Number(formData.Quantity) <= 0
+        ) {
+            toast.error('Quantity must be greater than 0');
+            quantityRef.current?.focus();
+            return false;
+        }
 
-    // Submit
+        if (
+            !formData.UnitPrice ||
+            Number(formData.UnitPrice) <= 0
+        ) {
+            toast.error('Unit Price must be greater than 0');
+            unitPriceRef.current?.focus();
+            return false;
+        }
+
+        if (!formData.Category) {
+            toast.error('Category is required');
+            categoryRef.current?.focus();
+            return false;
+        }
+
+        if (!formData.PurchaseDate) {
+            toast.error('Purchase Date is required');
+            purchaseDateRef.current?.focus();
+            return false;
+        }
+
+        if (!formData.StockStatus) {
+            toast.error('Stock Status is required');
+            stockStatusRef.current?.focus();
+            return false;
+        }
+        if (!formData.Description.trim()) {
+            toast.error('Description is required');
+            descriptionRef.current?.focus();
+            return false;
+        }
+
+
+        return true;
+    };
 
     const handleSubmit = async (): Promise<void> => {
 
-        if (
-            userRole === 'Inventory Staff'
-        ) {
+        if (userRole === 'Inventory Staff') {
+
             toast.error(
                 'You are not eligible to Add/Edit products'
             );
-            return;
 
-        }
-
-        if (!title.trim()) {
-            toast.error(
-                'Product Title is required'
-            );
-            titleRef.current?.focus();
             return;
         }
 
-        if (!productCode.trim()) {
-            toast.error(
-                'Product Code is required'
-            );
-            productCodeRef.current?.focus();
-            return;
-        }
-
-        if (!description.trim()) {
-            toast.error(
-                'Description is required'
-            );
-            descriptionRef.current?.focus();
-            return;
-        }
-
-
-        if (!quantity || Number(quantity) <= 0) {
-            toast.error('Quantity is required');
-            quantityRef.current?.focus();
-            return;
-        }
-
-        if (!unitPrice || Number(unitPrice) <= 0) {
-            toast.error('Unit Price is required');
-            unitPriceRef.current?.focus();
-            return;
-        }
-        if (!category) {
-            toast.error('Category is required');
-            categoryRef.current?.focus();
-            return;
-        }
-
-        if (!purchaseDate) {
-            toast.error('Purchase Date is required');
-            purchaseDateRef.current?.focus();
-            return;
-        }
-
-        if (!stockStatus) {
-            toast.error('Please select Stock Status');
-            stockStatusRef.current?.focus();
-            return;
-        }
-
+        if (!validateForm()) return;
 
         try {
 
             const product: IProduct = {
 
-                Title: title,
-                ProductCode: productCode,
-                Description: description,
-                Quantity: Number(quantity),
-                UnitPrice: Number(unitPrice),
-                Category: category,
-                PurchaseDate: purchaseDate,
-                StockStatus: stockStatus,
-                IsActive: isActive
+                Title: formData.Title,
+                ProductCode: formData.ProductCode,
+                Description: formData.Description,
+                Quantity: Number(formData.Quantity),
+                UnitPrice: Number(formData.UnitPrice),
+                Category: formData.Category,
+                PurchaseDate: formData.PurchaseDate,
+                StockStatus: formData.StockStatus,
+                IsActive: formData.IsActive
 
             };
 
@@ -186,22 +196,19 @@ const ProductForm: React.FC<IProductFormProps> = ({
                     product
                 );
 
-                toast.success(
-                    'Product Updated Successfully'
-                );
-
-            }
-            else {
+            } else {
 
                 await productService.addProduct(
                     product
                 );
 
-                toast.success(
-                    'Product Added Successfully'
-                );
-
             }
+
+            toast.success(
+                isEditMode
+                    ? 'Product Updated Successfully'
+                    : 'Product Added Successfully'
+            );
 
             setTimeout(() => {
 
@@ -209,8 +216,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
 
             }, 1000);
 
-        }
-        catch (error) {
+        } catch (error) {
 
             console.error(error);
 
@@ -219,61 +225,231 @@ const ProductForm: React.FC<IProductFormProps> = ({
             );
 
         }
-
     };
 
     return (
 
         <div className="product-form-container">
 
-            <ToastContainer position="top-right" />
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                pauseOnHover
+            />
 
-            <h2>
+            {/* Header */}
 
-                {isEditMode
-                    ? 'Edit Product'
-                    : 'Add Product'}
+            <div className="form-header">
 
-            </h2>
+                <div className="header-title">
+                    Product Management
+                </div>
 
-            <div className="form-group">
-
-                <label>
-                    Product Title
-                    <span className="required">*</span>
-                </label>
-
-                <input
-                    ref={titleRef}
-                    type="text"
-                    value={title}
-                    onChange={(e) =>
-                        setTitle(e.target.value)
-                    }
-                />
+                <div className="header-required">
+                    <span>*</span> indicates a required field
+                </div>
 
             </div>
 
-            <div className="form-group">
+            {/* Grid Layout */}
 
-                <label>
-                    Product Code
-                    <span className="required">*</span>
-                </label>
+            <div className="product-grid">
 
-                <input
-                    ref={productCodeRef}
-                    type="text"
-                    value={productCode}
-                    onChange={(e) =>
-                        setProductCode(
-                            e.target.value
-                        )
-                    }
-                />
+                {/* Product Title */}
+
+                <div className="form-group">
+
+                    <label>
+                        Product Title
+                        <span className="required">*</span>
+                    </label>
+
+                    <input
+                        ref={titleRef}
+                        type="text"
+                        name="Title"
+                        value={formData.Title}
+                        onChange={handleChange}
+                    />
+
+                </div>
+
+                {/* Product Code */}
+
+                <div className="form-group">
+
+                    <label>
+                        Product Code
+                        <span className="required">*</span>
+                    </label>
+
+                    <input
+                        ref={productCodeRef}
+                        type="text"
+                        name="ProductCode"
+                        value={formData.ProductCode}
+                        onChange={handleChange}
+                    />
+
+                </div>
+
+                {/* Category */}
+
+                <div className="form-group">
+
+                    <label>
+                        Category
+                        <span className="required">*</span>
+                    </label>
+
+                    <select
+                        ref={categoryRef}
+                        name="Category"
+                        value={formData.Category}
+                        onChange={handleChange}
+                    >
+                        <option value="">
+                            Select Category
+                        </option>
+
+                        <option value="Electronics">
+                            Electronics
+                        </option>
+
+                        <option value="Furniture">
+                            Furniture
+                        </option>
+
+                        <option value="Stationery">
+                            Stationery
+                        </option>
+
+                    </select>
+
+                </div>
+
+                {/* Stock Status */}
+
+                <div className="form-group">
+
+                    <label>
+                        Stock Status
+                        <span className="required">*</span>
+                    </label>
+
+                    <select
+                        ref={stockStatusRef}
+                        name="StockStatus"
+                        value={formData.StockStatus}
+                        onChange={handleChange}
+                    >
+                        <option value="">
+                            Select Status
+                        </option>
+
+                        <option value="Available">
+                            Available
+                        </option>
+
+                        <option value="LowStock">
+                            Low Stock
+                        </option>
+
+                        <option value="Out Of Stock">
+                            Out Of Stock
+                        </option>
+
+                        <option value="Damaged">
+                            Damaged
+                        </option>
+
+                    </select>
+
+                </div>
+
+                {/* Quantity */}
+
+                <div className="form-group">
+
+                    <label>
+                        Quantity
+                        <span className="required">*</span>
+                    </label>
+
+                    <input
+                        ref={quantityRef}
+                        type="number"
+                        name="Quantity"
+                        value={formData.Quantity}
+                        onChange={handleChange}
+                    />
+
+                </div>
+
+                {/* Unit Price */}
+
+                <div className="form-group">
+
+                    <label>
+                        Unit Price
+                        <span className="required">*</span>
+                    </label>
+
+                    <input
+                        ref={unitPriceRef}
+                        type="number"
+                        name="UnitPrice"
+                        value={formData.UnitPrice}
+                        onChange={handleChange}
+                    />
+
+                </div>
+
+                {/* Purchase Date */}
+
+                <div className="form-group">
+
+                    <label>
+                        Purchase Date
+                        <span className="required">*</span>
+                    </label>
+
+                    <input
+                        ref={purchaseDateRef}
+                        type="date"
+                        name="PurchaseDate"
+                        value={formData.PurchaseDate}
+                        onChange={handleChange}
+                    />
+
+                </div>
+
+                {/* Active */}
+
+                <div className="form-group active-group">
+
+                    <label>
+                        Active
+                    </label>
+
+                    <input
+                        type="checkbox"
+                        name="IsActive"
+                        checked={formData.IsActive}
+                        onChange={handleChange}
+                    />
+
+                </div>
 
             </div>
-            <div className="form-group">
+
+            {/* Description */}
+
+            <div className="description-section">
+
                 <label>
                     Description
                     <span className="required">*</span>
@@ -281,99 +457,22 @@ const ProductForm: React.FC<IProductFormProps> = ({
 
                 <textarea
                     ref={descriptionRef}
-                    value={description}
-                    onChange={(e) =>
-                        setDescription(
-                            e.target.value
-                        )
-                    }
+                    name="Description"
+                    value={formData.Description}
+                    onChange={handleChange}
                 />
+
             </div>
 
-            <div className="form-group">
-                <label>
-                    Quantity
-                    <span className="required">*</span>
-                </label>
-                <input
-                    ref={quantityRef}
-                    type="number"
-                    value={quantity}
-                    onChange={(e) =>
-                        setQuantity(
-                            e.target.value
-                        )
-                    }
-                />
-            </div>
-            <div className="form-group">
-                <label>
-                    Unit Price
-                    <span className="required">*</span>
-                </label>
-                <input
-                    ref={unitPriceRef}
-                    type="number"
-                    value={unitPrice}
-                    onChange={(e) =>
-                        setUnitPrice(
-                            e.target.value
-                        )
-                    }
-                />
-            </div>
-            <div className="form-group">
-                <label>
-                    Category
-                    <span className="required">*</span>
-                </label>
-                <select
-                    // ref={categoryRef}
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                >
-                    <option value="">Select Category</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Furniture">Furniture</option>
-                    <option value="Stationery">Stationery</option>
-                </select>
-            </div>
-            <div className="form-group">
-                <label>
-                    Purchase Date
-                    <span className="required">*</span>
-                </label>
-                <input
-                    ref={purchaseDateRef}
-                    type="date"
-                    value={purchaseDate}
-                    onChange={(e) =>
-                        setPurchaseDate(
-                            e.target.value
-                        )
-                    }
-                />
-            </div>
-            <div className="form-group">
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={isActive}
-                        onChange={(e) =>
-                            setIsActive(e.target.checked)
-                        }
-                    />
-                    Active
-                </label>
-            </div>
+            {/* Buttons */}
 
             <div className="button-section">
 
                 <button
+                    className="btn-submit"
                     type="button"
                     disabled={
-                        userRole ===
-                        'Inventory Staff'
+                        userRole === 'Inventory Staff'
                     }
                     onClick={handleSubmit}
                 >
@@ -383,6 +482,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                 </button>
 
                 <button
+                    className="btn-cancel"
                     type="button"
                     onClick={() =>
                         navigate('/products')
@@ -396,7 +496,6 @@ const ProductForm: React.FC<IProductFormProps> = ({
         </div>
 
     );
-
 };
 
 export default ProductForm;

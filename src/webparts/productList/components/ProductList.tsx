@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-
+import { HashRouter } from 'react-router-dom';
 import Navbar from './Navigations/navbar';
 import AppRoutes from './Routes/AppRoutes';
 import { IProductListProps } from './IProductListProps';
@@ -37,21 +36,13 @@ const ProductList: React.FC<IProductListProps> = (props) => {
             SPHttpClient.configurations.v1
           );
 
-        const data =
-          await response.json();
+        const data = await response.json();
 
-        const groups =
-          data.Groups || [];
+        const groups = data.Groups || [];
 
-        const groupNames =
-          groups.map(
-            (g: any) => g.Title
-          );
+        const groupNames = groups.map((g: any) => g.Title);
 
-        console.log(
-          'User Groups:',
-          groupNames
-        );
+        console.log('User Groups:', groupNames);
 
         if (
           groupNames.includes(
@@ -94,29 +85,22 @@ const ProductList: React.FC<IProductListProps> = (props) => {
 
       }
 
-    };
-
-
+    };  
 
   return (
-    <BrowserRouter>
-
+    <React.Fragment>
+      <HashRouter>
       <div style={{ display: 'flex' }}>
-
         <Navbar />
-
         <div style={{ flex: 1, padding: '20px' }}>
-
           <AppRoutes
             productService={productService}
             userRole={userRole}
           />
-
         </div>
-
       </div>
-
-    </BrowserRouter>
+      </HashRouter>
+    </React.Fragment>
   );
 };
 

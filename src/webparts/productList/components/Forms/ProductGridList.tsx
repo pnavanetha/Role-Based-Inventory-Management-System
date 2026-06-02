@@ -17,6 +17,7 @@ interface IProductGridListProps {
   userRole: string;
 }
 
+
 const ProductGridList: React.FC<IProductGridListProps> = ({
   productService,
   userRole
@@ -25,32 +26,45 @@ const ProductGridList: React.FC<IProductGridListProps> = ({
   const navigate = useNavigate();
 
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [searchText, setSearchText] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
 
   const getProducts = async (): Promise<void> => {
 
     try {
 
-      const response =
-        await productService.getProducts();
+      const response = await productService.getProducts();
 
       console.log('GRID DATA:', response);
 
       setProducts(response);
 
     }
-    catch (error) {
-
-      console.error(error);
+    catch (error) {console.error(error);
 
     }
 
   };
+  useEffect(() => {
+    getProducts();
+  }, [productService]);
 
   useEffect(() => {
 
-    getProducts();
+    let filteredData = products;
 
-  }, [productService]);
+    if (searchText) {
+
+      const allKeys =
+        Object.keys(products[0] || {});
+
+      filteredData = filteredData.filter((item: any) =>allKeys.some((field) =>item[field] && item[field].toString().toLowerCase().includes(searchText.toLowerCase()))
+        );
+    }
+    setFilteredProducts(
+      filteredData
+    );
+  }, [products, searchText]);
 
   const handleEdit = (id: number): void => {
 
@@ -58,86 +72,249 @@ const ProductGridList: React.FC<IProductGridListProps> = ({
 
   };
 
-//   const handleDelete = async (id: number): Promise<void> => {
 
-//   const confirmDelete = window.confirm(
-//     'Are you sure you want to delete this product?'
-//   );
+  const handleDelete =
+    async (
+      id: number
+    ): Promise<void> => {
 
-//   if (!confirmDelete) {
+      if (
+        userRole !==
+        'Inventory Admin'
+      ) {
 
-//     return;
-//   }
+        alert(
+          'You are not eligible for deletion'
+        );
 
-//   try {
+        return;
 
-//     console.log('Delete Id:', id);  
-//     await productService.deleteProduct(id);
-//     alert('Product Deleted Successfully');
-//     await getProducts();
+      }
 
-//   }
-//   catch (error) {
+      await productService
+        .deleteProduct(id);
 
-//     console.error('Delete Error:', error);
+      await getProducts();
 
-//     alert('Delete Failed');
+    };
 
-//   }
 
-// };
-const handleDelete =
-  async (
-    id: number
-  ): Promise<void> => {
 
-    if (
-      userRole !==
-      'Inventory Admin'
-    ) {
+  // return (
 
-      alert(
-        'You are not eligible for deletion'
-      );
+  //   <div className="product-container">
 
-      return;
+  //     <div className="page-header">
 
-    }
+  //       <div>
 
-    await productService
-      .deleteProduct(id);
+  //         <h1 className="page-title">
+  //           Product Management
+  //         </h1>
 
-    await getProducts();
+  //       </div>
+  //     </div>
+  //       <div>
 
-};
+  //       <button
+  //         type="button"
+  //         className="add-product-btn"
+  //         onClick={() => navigate('/products/add')}
+  //       >
+  //         + Add Product
+  //       </button>
+  //       </div>
 
+      
+
+      
+  //       <div className="search-section">
+
+  //         <label className="search-label">
+  //           Search:
+  //         </label>
+
+  //         <input
+  //           type="text"
+  //           placeholder="Search Products..."
+  //           value={searchText}
+  //           onChange={(e) =>
+  //             setSearchText(e.target.value)
+  //           }
+  //         />
+
+  //       </div>
+  //       <table className="table-section">
+
+  //       <thead>
+
+  //         <tr>
+
+  //           <th>Action</th>
+  //           <th>Title</th>
+  //           <th>Code</th>
+  //           <th>Description</th>
+  //           <th>Quantity</th>
+  //           <th>Unit Price</th>
+  //           <th>Category</th>
+  //           <th>Purchase Date</th>
+  //           <th>Status</th>
+  //           <th>Active</th>
+
+  //         </tr>
+
+  //       </thead>
+
+  //       <tbody>
+
+  //         {filteredProducts.length === 0 ? (
+
+  //           <tr>
+
+  //             <td
+  //               colSpan={10}
+  //               className="no-data"
+  //             >
+  //               No Products Found
+  //             </td>
+
+  //           </tr>
+
+  //         ) : (
+
+  //           products.map((item) => (
+
+  //             <tr key={item.Id}>
+
+  //               <td>
+
+  //                 <button
+  //                   type="button"
+  //                   className="icon-btn delete-icon"
+  //                   title="Delete"
+  //                   onClick={() => {
+  //                     if (item.Id) {
+  //                       handleDelete(item.Id);
+  //                     }
+  //                   }}
+  //                 >
+  //                   <DeleteRegular />
+  //                 </button>
+
+  //                 <button
+  //                   type="button"
+  //                   className="icon-btn edit-icon"
+  //                   title="Edit"
+  //                   onClick={() => {
+  //                     if (item.Id) {
+  //                       handleEdit(item.Id);
+  //                     }
+  //                   }}
+  //                 >
+  //                   <EditRegular />
+  //                 </button>
+
+  //               </td>
+
+  //               <td>{item.Title}</td>
+
+  //               <td>{item.ProductCode}</td>
+
+  //               <td>
+  //                 {item.Description
+  //                   ? item.Description.replace(/<[^>]*>/g, '')
+  //                   : '-'}
+  //               </td>
+
+  //               <td>{item.Quantity}</td>
+
+  //               <td>₹ {item.UnitPrice}</td>
+
+  //               <td>{item.Category}</td>
+
+  //               <td>
+  //                 {item.PurchaseDate
+  //                   ? new Date(
+  //                     item.PurchaseDate
+  //                   ).toLocaleDateString()
+  //                   : '-'}
+  //               </td>
+
+  //               <td>{item.StockStatus}</td>
+
+  //               <td>
+  //                 {item.IsActive
+  //                   ? 'Yes'
+  //                   : 'No'}
+  //               </td>
+
+  //             </tr>
+
+  //           ))
+
+  //         )}
+
+  //       </tbody>
+
+  //     </table>
+
+  //   </div>
+
+  // );
   return (
 
-    <div className="product-container">
+  <div className="product-container">
 
-      <div className="page-header">
+    {/* Header */}
 
-        <div>
+    <div className="page-header">
 
-          <h1 className="page-title">
-            Product Management
-          </h1>
+      <div>
 
-          <p className="page-subtitle">
-            Manage inventory products and stock information
-          </p>
+        <h1 className="page-title">
+          Product Management
+        </h1>
 
-        </div>
-
-        <button
-          type="button"
-          className="add-product-btn"
-          onClick={() => navigate('/products/add')}
-        >
-          + Add Product
-        </button>
+        <p className="page-subtitle">
+          Manage inventory products and stock information
+        </p>
 
       </div>
+
+      <button
+        type="button"
+        className="add-product-btn"
+        onClick={() => navigate('/products/add')}
+      >
+        + Add Product
+      </button>
+
+    </div>
+
+    {/* Search */}
+
+    <div className="search-section">
+
+      <label className="search-label">
+        Search:
+      </label>
+
+      <input
+        type="text"
+        placeholder="Search Products..."
+        value={searchText}
+        onChange={(e) =>
+          setSearchText(
+            e.target.value
+          )
+        }
+      />
+
+    </div>
+
+    {/* Table */}
+
+    <div className="table-container">
 
       <table className="product-table">
 
@@ -162,7 +339,7 @@ const handleDelete =
 
         <tbody>
 
-          {products.length === 0 ? (
+          {filteredProducts.length === 0 ? (
 
             <tr>
 
@@ -177,7 +354,7 @@ const handleDelete =
 
           ) : (
 
-            products.map((item) => (
+            filteredProducts.map((item) => (
 
               <tr key={item.Id}>
 
@@ -230,8 +407,8 @@ const handleDelete =
                 <td>
                   {item.PurchaseDate
                     ? new Date(
-                      item.PurchaseDate
-                    ).toLocaleDateString()
+                        item.PurchaseDate
+                      ).toLocaleDateString()
                     : '-'}
                 </td>
 
@@ -255,7 +432,9 @@ const handleDelete =
 
     </div>
 
-  );
+  </div>
+
+);
 
 };
 

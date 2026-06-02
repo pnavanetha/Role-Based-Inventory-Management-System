@@ -1,7 +1,12 @@
-
 .product-container {
-    padding: 20px;
-    background: #ffffff;
+    padding: 25px;
+    background: #f8fafc;
+    min-height: 100vh;
+}
+.page-subtitle {
+    margin-top: 6px;
+    color: #64748b;
+    font-size: 14px;
 }
 
 .page-header {
@@ -9,35 +14,29 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
-    border-bottom: 2px solid #e5e5e5;
-    padding-bottom: 15px;
 }
 
 .page-title {
     margin: 0;
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 700;
-    color: #0f6cbd;
+    color: #06b6d4;
 }
 
-.page-subtitle {
-    margin-top: 5px;
-    font-size: 14px;
-    color: #666;
-}
 
 .add-product-btn {
-    background: #0f6cbd;
+    background: #06b6d4;
     color: white;
     border: none;
     padding: 10px 18px;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
+    font-size: 15px;
 }
 
 .add-product-btn:hover {
-    background: #095aa5;
+    background: #06b6d4;
 }
 
 .product-table {
@@ -50,14 +49,13 @@
     background: #e8f6f8;
     padding: 12px;
     text-align: left;
-    font-weight: 600;
-    border-bottom: 2px solid #d9d9d9;
 }
 
 .product-table td {
     padding: 12px;
     border-bottom: 1px solid #e5e5e5;
 }
+
 
 .product-table tbody tr:hover {
     background: #f8fcfd;
@@ -105,15 +103,38 @@
 }
 
 .edit-icon {
-    color: #0078d4;
+    color: #06b6d4;
 }
 
 .edit-icon:hover {
-    color: #005a9e;
+    color: #06b6d4;
 }
 
 .icon-btn svg {
     width: 18px;
     height: 18px;
+}
+.search-section {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.search-section input {
+    width: 250px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+}
+.table-container {
+    overflow-x: auto;
+}
+
+.search-label {
+    font-weight: 600;
+    color: #334155;
+
 }
 
