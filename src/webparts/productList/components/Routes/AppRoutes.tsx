@@ -19,8 +19,6 @@ const AppRoutes: React.FC<IAppRoutesProps> = ({
 
     <Routes>
 
-      {/* Default Route */}
-
       <Route
         path="/"
         element={
@@ -31,8 +29,7 @@ const AppRoutes: React.FC<IAppRoutesProps> = ({
         }
       />
 
-      {/* Product List */}
-
+  
       <Route
         path="/products"
         element={
@@ -42,8 +39,6 @@ const AppRoutes: React.FC<IAppRoutesProps> = ({
           />
         }
       />
-
-      {/* Add Product */}
 
       <Route
         path="/products/add"
@@ -55,8 +50,6 @@ const AppRoutes: React.FC<IAppRoutesProps> = ({
         }
       />
 
-      {/* Edit Product */}
-
       <Route
         path="/products/edit/:id"
         element={
@@ -66,8 +59,6 @@ const AppRoutes: React.FC<IAppRoutesProps> = ({
           />
         }
       />
-
-      {/* Invalid Route */}
 
       <Route
         path="*"

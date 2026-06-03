@@ -1,0 +1,81 @@
+Testing 
+=================
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "products-Dev-sp-fx-client-side-solution",
+    "id": "8e64c383-72c4-49cf-bcf4-5abff584c472",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.21.1"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "products-sp-fx Dev description"
+      },
+      "longDescription": {
+        "default": "products-sp-fx Dev description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "products-sp-fx Feature",
+        "description": "The feature that activates elements of the products-sp-fx  Dev solution.",
+        "id": "bab72a83-52d0-446b-9819-0c5901ae453c",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/products-sp-fx.sppkg"
+  }
+}
+--------------------------------------------
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "85dcd9e5-f45b-4f7c-9528-1e365ccbb4bc",
+  "alias": "ProductListWebPart",
+  "componentType": "WebPart",
+
+  // The "*" signifies that the version should be taken from the package.json
+  "version": "*",
+  "manifestVersion": 2,
+
+  // If true, the component can only be installed on sites where Custom Script is allowed.
+  // Components that allow authors to embed arbitrary script code should set this to true.
+  // https://support.office.com/en-us/article/Turn-scripting-capabilities-on-or-off-1f2c515f-5d7e-448a-9fd7-835da935584f
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "ProductList-Dev" },
+    "description": { "default": "ProductList Dev description" },
+    "officeFabricIconFontName": "Page",
+    "properties": {
+      "description": "ProductList-Dev"
+    }
+  }]
+}
+
+----------------------------------------------------------------------------------------------------------
+
+
+UAT
+=================
+
+Live
+ ==============
+

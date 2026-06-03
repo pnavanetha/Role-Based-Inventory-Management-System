@@ -3,8 +3,7 @@ import '@pnp/sp/webs';
 
 import '@pnp/sp/lists';
 import '@pnp/sp/items';
-// import '@pnp/sp/files';
-// import '@pnp/sp/folders';
+
 
 import { IProduct } from '../Models/IProduct';
 

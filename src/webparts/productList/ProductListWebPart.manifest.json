@@ -18,11 +18,11 @@
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
     "group": { "default": "Advanced" },
-    "title": { "default": "ProductList" },
-    "description": { "default": "ProductList description" },
+    "title": { "default": "ProductList-Dev" },
+    "description": { "default": "ProductList Dev description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "ProductList"
+      "description": "ProductList-Dev"
     }
   }]
 }

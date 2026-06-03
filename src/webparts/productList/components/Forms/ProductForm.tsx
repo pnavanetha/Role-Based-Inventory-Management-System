@@ -37,11 +37,9 @@ const ProductForm: React.FC<IProductFormProps> = ({
     });
 
     useEffect(() => {
-
+        
         const loadProduct = async (): Promise<void> => {
-
-            if (!id) return;
-
+            if (!id) return;            
             try {
 
                 const product =
@@ -182,7 +180,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                 Description: formData.Description,
                 Quantity: Number(formData.Quantity),
                 UnitPrice: Number(formData.UnitPrice),
-                Category: formData.Category,
+                Category: formData.Category, 
                 PurchaseDate: formData.PurchaseDate,
                 StockStatus: formData.StockStatus,
                 IsActive: formData.IsActive
@@ -227,10 +225,10 @@ const ProductForm: React.FC<IProductFormProps> = ({
         }
     };
 
+   
+
     return (
-
         <div className="product-form-container">
-
             <ToastContainer
                 position="top-right"
                 autoClose={3000}
@@ -239,264 +237,70 @@ const ProductForm: React.FC<IProductFormProps> = ({
                 closeOnClick
                 pauseOnHover
             />
-
-            {/* Header */}
-
             <div className="form-header">
+                <div className="header-title">Product Management</div>
 
-                <div className="header-title">
-                    Product Management
-                </div>
-
-                <div className="header-required">
+                {/* <div className="header-required">
                     <span>*</span> indicates a required field
-                </div>
-
+                </div> */}
             </div>
-
-            {/* Grid Layout */}
-
             <div className="product-grid">
-
-                {/* Product Title */}
-
                 <div className="form-group">
-
-                    <label>
-                        Product Title
-                        <span className="required">*</span>
-                    </label>
-
-                    <input
-                        ref={titleRef}
-                        type="text"
-                        name="Title"
-                        value={formData.Title}
-                        onChange={handleChange}
-                    />
-
-                </div>
-
-                {/* Product Code */}
-
+                    <label>Product Title<span className="required">*</span></label>
+                    <input type="text" name="Title" ref={titleRef} value={formData.Title} onChange={handleChange}/> </div>
                 <div className="form-group">
-
-                    <label>
-                        Product Code
-                        <span className="required">*</span>
-                    </label>
-
-                    <input
-                        ref={productCodeRef}
-                        type="text"
-                        name="ProductCode"
-                        value={formData.ProductCode}
-                        onChange={handleChange}
-                    />
-
-                </div>
-
-                {/* Category */}
-
+                    <label>Product Code<span className="required">*</span></label>  
+                    <input type="text" name="ProductCode" ref={productCodeRef} value={formData.ProductCode} onChange={handleChange}/></div>
                 <div className="form-group">
-
-                    <label>
-                        Category
-                        <span className="required">*</span>
-                    </label>
-
-                    <select
-                        ref={categoryRef}
-                        name="Category"
-                        value={formData.Category}
-                        onChange={handleChange}
-                    >
-                        <option value="">
-                            Select Category
-                        </option>
-
-                        <option value="Electronics">
-                            Electronics
-                        </option>
-
-                        <option value="Furniture">
-                            Furniture
-                        </option>
-
-                        <option value="Stationery">
-                            Stationery
-                        </option>
-
+                    <label>Category<span className="required">*</span></label>    
+                    <select name="Category" ref={categoryRef} value={formData.Category} onChange={handleChange} >                        
+                        <option value="">Select Category</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Furniture">Furniture</option>
+                        <option value="Stationery">Stationery</option>
                     </select>
 
                 </div>
-
-                {/* Stock Status */}
-
                 <div className="form-group">
-
-                    <label>
-                        Stock Status
-                        <span className="required">*</span>
-                    </label>
-
-                    <select
-                        ref={stockStatusRef}
-                        name="StockStatus"
-                        value={formData.StockStatus}
-                        onChange={handleChange}
-                    >
-                        <option value="">
-                            Select Status
-                        </option>
-
-                        <option value="Available">
-                            Available
-                        </option>
-
-                        <option value="LowStock">
-                            Low Stock
-                        </option>
-
-                        <option value="Out Of Stock">
-                            Out Of Stock
-                        </option>
-
-                        <option value="Damaged">
-                            Damaged
-                        </option>
-
+                    <label>Stock Status<span className="required">*</span></label>
+                    <select name="StockStatus" ref={stockStatusRef}  value={formData.StockStatus} onChange={handleChange} >                  
+                        <option value="">Select Status</option>
+                        <option value="Available">Available</option>
+                        <option value="LowStock">Low Stock</option>
+                        <option value="Out Of Stock">Out Of Stock</option>
+                        <option value="Damaged">Damaged</option>
                     </select>
-
+                </div>  
+                <div className="form-group">
+                    <label>Quantity<span className="required">*</span></label>
+                    <input type="number" name="Quantity" ref={quantityRef} value={formData.Quantity} onChange={handleChange}/> 
                 </div>
-
-                {/* Quantity */}
 
                 <div className="form-group">
-
-                    <label>
-                        Quantity
-                        <span className="required">*</span>
-                    </label>
-
-                    <input
-                        ref={quantityRef}
-                        type="number"
-                        name="Quantity"
-                        value={formData.Quantity}
-                        onChange={handleChange}
-                    />
-
-                </div>
-
-                {/* Unit Price */}
-
+                    <label>Unit Price <span className="required">*</span></label>
+                    <input type="number" name="UnitPrice" ref={unitPriceRef} value={formData.UnitPrice} onChange={handleChange}/>              
+                </div>  
                 <div className="form-group">
-
-                    <label>
-                        Unit Price
-                        <span className="required">*</span>
-                    </label>
-
-                    <input
-                        ref={unitPriceRef}
-                        type="number"
-                        name="UnitPrice"
-                        value={formData.UnitPrice}
-                        onChange={handleChange}
-                    />
-
+                    <label> Purchase Date<span className="required">*</span></label>
+                    <input type="date" name="PurchaseDate" value={formData.PurchaseDate} ref={purchaseDateRef} onChange={handleChange}/>
                 </div>
-
-                {/* Purchase Date */}
-
-                <div className="form-group">
-
-                    <label>
-                        Purchase Date
-                        <span className="required">*</span>
-                    </label>
-
-                    <input
-                        ref={purchaseDateRef}
-                        type="date"
-                        name="PurchaseDate"
-                        value={formData.PurchaseDate}
-                        onChange={handleChange}
-                    />
-
-                </div>
-
-                {/* Active */}
-
                 <div className="form-group active-group">
-
-                    <label>
-                        Active
-                    </label>
-
-                    <input
-                        type="checkbox"
-                        name="IsActive"
-                        checked={formData.IsActive}
-                        onChange={handleChange}
-                    />
-
+                    <label>Active </label>
+                    <input type="checkbox" name="IsActive" checked={formData.IsActive} onChange={handleChange} />
                 </div>
 
             </div>
-
-            {/* Description */}
-
             <div className="description-section">
-
-                <label>
-                    Description
-                    <span className="required">*</span>
-                </label>
-
-                <textarea
-                    ref={descriptionRef}
-                    name="Description"
-                    value={formData.Description}
-                    onChange={handleChange}
-                />
-
-            </div>
-
-            {/* Buttons */}
-
+                <label>Description <span className="required">*</span></label>
+                <textarea name="Description" value={formData.Description} ref={descriptionRef} onChange={handleChange}/>
+            </div>      
             <div className="button-section">
-
-                <button
-                    className="btn-submit"
-                    type="button"
-                    disabled={
-                        userRole === 'Inventory Staff'
-                    }
-                    onClick={handleSubmit}
-                >
-                    {isEditMode
-                        ? 'Update'
-                        : 'Submit'}
-                </button>
-
-                <button
-                    className="btn-cancel"
-                    type="button"
-                    onClick={() =>
-                        navigate('/products')
-                    }
-                >
-                    Cancel
-                </button>
-
+                <button type="button" className="btn-submit" disabled={userRole === 'Inventory Staff'} onClick={handleSubmit}>
+                    {isEditMode ? 'Update': 'Submit'}</button>
+                <button type="button" className="btn-cancel" onClick={() =>navigate('/products')}>Cancel</button>
             </div>
-
         </div>
-
     );
 };
-
 export default ProductForm;
 
