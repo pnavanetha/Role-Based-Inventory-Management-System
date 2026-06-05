@@ -25,7 +25,11 @@ const Navbar: React.FC = () => {
         <span className="icon">🏠</span>
 
         {!isCollapsed && (
-          <span className="menu-text">Dashboard</span>
+          <span 
+          className="menu-text"
+          onClick={()=> navigate('/dashboard')}
+          >
+          Dashboard</span>
         )}
       </div>
 

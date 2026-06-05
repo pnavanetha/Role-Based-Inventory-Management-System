@@ -37,9 +37,9 @@ const ProductForm: React.FC<IProductFormProps> = ({
     });
 
     useEffect(() => {
-        
+
         const loadProduct = async (): Promise<void> => {
-            if (!id) return;            
+            if (!id) return;
             try {
 
                 const product =
@@ -73,12 +73,13 @@ const ProductForm: React.FC<IProductFormProps> = ({
 
     const titleRef = useRef<HTMLInputElement>(null);
     const productCodeRef = useRef<HTMLInputElement>(null);
-    const descriptionRef = useRef<HTMLTextAreaElement>(null);
+    const categoryRef = useRef<HTMLSelectElement>(null);
+    const stockStatusRef = useRef<HTMLSelectElement>(null);
     const quantityRef = useRef<HTMLInputElement>(null);
     const unitPriceRef = useRef<HTMLInputElement>(null);
-    const categoryRef = useRef<HTMLSelectElement>(null);
     const purchaseDateRef = useRef<HTMLInputElement>(null);
-    const stockStatusRef = useRef<HTMLSelectElement>(null);
+    const descriptionRef = useRef<HTMLTextAreaElement>(null);
+
 
     const handleChange = (
         e: React.ChangeEvent<
@@ -112,7 +113,12 @@ const ProductForm: React.FC<IProductFormProps> = ({
             productCodeRef.current?.focus();
             return false;
         }
-        
+        if (!formData.Category) {
+            toast.error('Category is required');
+            categoryRef.current?.focus();
+            return false;
+        }
+
         if (
             !formData.Quantity ||
             Number(formData.Quantity) <= 0
@@ -128,12 +134,6 @@ const ProductForm: React.FC<IProductFormProps> = ({
         ) {
             toast.error('Unit Price must be greater than 0');
             unitPriceRef.current?.focus();
-            return false;
-        }
-
-        if (!formData.Category) {
-            toast.error('Category is required');
-            categoryRef.current?.focus();
             return false;
         }
 
@@ -180,7 +180,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                 Description: formData.Description,
                 Quantity: Number(formData.Quantity),
                 UnitPrice: Number(formData.UnitPrice),
-                Category: formData.Category, 
+                Category: formData.Category,
                 PurchaseDate: formData.PurchaseDate,
                 StockStatus: formData.StockStatus,
                 IsActive: formData.IsActive
@@ -225,8 +225,6 @@ const ProductForm: React.FC<IProductFormProps> = ({
         }
     };
 
-   
-
     return (
         <div className="product-form-container">
             <ToastContainer
@@ -247,13 +245,13 @@ const ProductForm: React.FC<IProductFormProps> = ({
             <div className="product-grid">
                 <div className="form-group">
                     <label>Product Title<span className="required">*</span></label>
-                    <input type="text" name="Title" ref={titleRef} value={formData.Title} onChange={handleChange}/> </div>
+                    <input type="text" name="Title" ref={titleRef} value={formData.Title} onChange={handleChange} /> </div>
                 <div className="form-group">
-                    <label>Product Code<span className="required">*</span></label>  
-                    <input type="text" name="ProductCode" ref={productCodeRef} value={formData.ProductCode} onChange={handleChange}/></div>
+                    <label>Product Code<span className="required">*</span></label>
+                    <input type="text" name="ProductCode" ref={productCodeRef} value={formData.ProductCode} onChange={handleChange} /></div>
                 <div className="form-group">
-                    <label>Category<span className="required">*</span></label>    
-                    <select name="Category" ref={categoryRef} value={formData.Category} onChange={handleChange} >                        
+                    <label>Category<span className="required">*</span></label>
+                    <select name="Category" ref={categoryRef} value={formData.Category} onChange={handleChange} >
                         <option value="">Select Category</option>
                         <option value="Electronics">Electronics</option>
                         <option value="Furniture">Furniture</option>
@@ -263,26 +261,26 @@ const ProductForm: React.FC<IProductFormProps> = ({
                 </div>
                 <div className="form-group">
                     <label>Stock Status<span className="required">*</span></label>
-                    <select name="StockStatus" ref={stockStatusRef}  value={formData.StockStatus} onChange={handleChange} >                  
+                    <select name="StockStatus" ref={stockStatusRef} value={formData.StockStatus} onChange={handleChange} >
                         <option value="">Select Status</option>
                         <option value="Available">Available</option>
                         <option value="LowStock">Low Stock</option>
                         <option value="Out Of Stock">Out Of Stock</option>
                         <option value="Damaged">Damaged</option>
                     </select>
-                </div>  
+                </div>
                 <div className="form-group">
                     <label>Quantity<span className="required">*</span></label>
-                    <input type="number" name="Quantity" ref={quantityRef} value={formData.Quantity} onChange={handleChange}/> 
+                    <input type="number" name="Quantity" ref={quantityRef} value={formData.Quantity} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Unit Price <span className="required">*</span></label>
-                    <input type="number" name="UnitPrice" ref={unitPriceRef} value={formData.UnitPrice} onChange={handleChange}/>              
-                </div>  
+                    <input type="number" name="UnitPrice" ref={unitPriceRef} value={formData.UnitPrice} onChange={handleChange} />
+                </div>
                 <div className="form-group">
                     <label> Purchase Date<span className="required">*</span></label>
-                    <input type="date" name="PurchaseDate" value={formData.PurchaseDate} ref={purchaseDateRef} onChange={handleChange}/>
+                    <input type="date" name="PurchaseDate" value={formData.PurchaseDate} ref={purchaseDateRef} onChange={handleChange} />
                 </div>
                 <div className="form-group active-group">
                     <label>Active </label>
@@ -292,12 +290,12 @@ const ProductForm: React.FC<IProductFormProps> = ({
             </div>
             <div className="description-section">
                 <label>Description <span className="required">*</span></label>
-                <textarea name="Description" value={formData.Description} ref={descriptionRef} onChange={handleChange}/>
-            </div>      
+                <textarea name="Description" value={formData.Description} ref={descriptionRef} onChange={handleChange} />
+            </div>
             <div className="button-section">
                 <button type="button" className="btn-submit" disabled={userRole === 'Inventory Staff'} onClick={handleSubmit}>
-                    {isEditMode ? 'Update': 'Submit'}</button>
-                <button type="button" className="btn-cancel" onClick={() =>navigate('/products')}>Cancel</button>
+                    {isEditMode ? 'Update' : 'Submit'}</button>
+                <button type="button" className="btn-cancel" onClick={() => navigate('/products')}>Cancel</button>
             </div>
         </div>
     );

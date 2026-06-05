@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import ProductGridList from '../Forms/ProductGridList';
 import ProductForm from '../Forms/ProductForm';
 import ProductService from '../Services/ProductService';
+import Dashboard from '../Forms/Dashboard';
 
 interface IAppRoutesProps {
   productService: ProductService;
@@ -19,56 +20,18 @@ const AppRoutes: React.FC<IAppRoutesProps> = ({
 
     <Routes>
 
-      <Route
-        path="/"
-        element={
-          <Navigate
-            to="/products"
-            replace
-          />
-        }
-      />
+      <Route path='/' element={<Navigate to="/dashboard" replace />} />
+      <Route path='/dashboard' element={<Dashboard />} />
 
+      {/* <Route path="/" element={<Navigate to="/products" replace />}/> */}
   
-      <Route
-        path="/products"
-        element={
-          <ProductGridList
-            productService={productService}
-            userRole={userRole}
-          />
-        }
-      />
+      <Route path="/products" element={<ProductGridList productService={productService} userRole={userRole} />} />
 
-      <Route
-        path="/products/add"
-        element={
-          <ProductForm
-            productService={productService}
-            userRole={userRole}
-          />
-        }
-      />
+      <Route path="/products/add" element={<ProductForm productService={productService} userRole={userRole} />} />
 
-      <Route
-        path="/products/edit/:id"
-        element={
-          <ProductForm
-            productService={productService}
-            userRole={userRole}
-          />
-        }
-      />
+      <Route path="/products/edit/:id" element={<ProductForm productService={productService} userRole={userRole} />}/>
 
-      <Route
-        path="*"
-        element={
-          <Navigate
-            to="/products"
-            replace
-          />
-        }
-      />
+      <Route path="*" element={<Navigate to="/dashboard" replace />}/>
 
     </Routes>
 
