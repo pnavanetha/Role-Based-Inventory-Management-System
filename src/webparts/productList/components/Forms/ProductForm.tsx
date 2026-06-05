@@ -27,12 +27,12 @@ const ProductForm: React.FC<IProductFormProps> = ({
     const [formData, setFormData] = useState({
         Title: '',
         ProductCode: '',
-        Description: '',
+        Category: '',
+        StockStatus: '',
         Quantity: '',
         UnitPrice: '',
-        Category: '',
         PurchaseDate: '',
-        StockStatus: '',
+        Description: '',
         IsActive: true
     });
 
@@ -50,12 +50,12 @@ const ProductForm: React.FC<IProductFormProps> = ({
                 setFormData({
                     Title: product.Title || '',
                     ProductCode: product.ProductCode || '',
-                    Description: product.Description || '',
+                    Category: product.Category || '',
+                    StockStatus: product.StockStatus || '',
                     Quantity: product.Quantity?.toString() || '',
                     UnitPrice: product.UnitPrice?.toString() || '',
-                    Category: product.Category || '',
                     PurchaseDate: product.PurchaseDate || '',
-                    StockStatus: product.StockStatus || '',
+                    Description: product.Description || '',
                     IsActive: product.IsActive ?? true
                 });
 
@@ -118,6 +118,11 @@ const ProductForm: React.FC<IProductFormProps> = ({
             categoryRef.current?.focus();
             return false;
         }
+        if (!formData.StockStatus) {
+            toast.error('Stock Status is required');
+            stockStatusRef.current?.focus();
+            return false;
+        }
 
         if (
             !formData.Quantity ||
@@ -143,11 +148,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
             return false;
         }
 
-        if (!formData.StockStatus) {
-            toast.error('Stock Status is required');
-            stockStatusRef.current?.focus();
-            return false;
-        }
+
         if (!formData.Description.trim()) {
             toast.error('Description is required');
             descriptionRef.current?.focus();
@@ -177,12 +178,13 @@ const ProductForm: React.FC<IProductFormProps> = ({
 
                 Title: formData.Title,
                 ProductCode: formData.ProductCode,
-                Description: formData.Description,
-                Quantity: Number(formData.Quantity),
-                UnitPrice: Number(formData.UnitPrice),
                 Category: formData.Category,
+                StockStatus: formData.StockStatus,                
+                Quantity: Number(formData.Quantity),
+                UnitPrice: Number(formData.UnitPrice),                
                 PurchaseDate: formData.PurchaseDate,
-                StockStatus: formData.StockStatus,
+                Description: formData.Description,
+                
                 IsActive: formData.IsActive
 
             };

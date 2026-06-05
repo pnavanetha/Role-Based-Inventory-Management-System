@@ -3,11 +3,12 @@ export interface IProduct {
   Id?: number;
   Title: string;
   ProductCode: string;
-  Description: string;
-  Quantity: number;
-  UnitPrice: number;
   Category: string;
+  StockStatus: string;  
+  Quantity: number;
+  UnitPrice: number;  
   PurchaseDate: string;
+  Description: string;
   // AssignedToId?: number;
   // AssignedTo?: {
   //   Id: number;
@@ -16,7 +17,7 @@ export interface IProduct {
   // ProductWebsite: string;
   // ProductImageURL: string;
   // WarrantyExpiryDate: string;
-  StockStatus: string;
+  
   IsActive: boolean;
 
 }

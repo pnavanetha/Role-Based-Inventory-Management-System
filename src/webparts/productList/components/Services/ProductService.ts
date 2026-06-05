@@ -12,6 +12,7 @@ export default class ProductService {
 
   constructor(sp: SPFI) {
     this._sp = sp;
+    
   }
 
   // Get All Products
@@ -21,7 +22,8 @@ export default class ProductService {
       return await this._sp.web.lists
         .getByTitle('ProductList')
         .items
-        .select('Id','Title','ProductCode','Description','Quantity','UnitPrice','Category','PurchaseDate','StockStatus','IsActive')
+        // .select('Id','Title','ProductCode','Description','Quantity','UnitPrice','Category','PurchaseDate','StockStatus','IsActive')
+        .select('*')
         .orderBy('Id', false)();
     } catch (error) {
       console.error('Get Products Error', error);
@@ -58,7 +60,6 @@ export default class ProductService {
       const result = await this._sp.web.lists
         .getByTitle('ProductList')
         .items.add({
-
           Title: product.Title,
           ProductCode: product.ProductCode,
           Description: product.Description,
